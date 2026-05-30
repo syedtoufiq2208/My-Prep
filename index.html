@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CCNA Subnetting Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f8ff; /* light cool blue */
+      color: #003366; /* deep navy */
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #003366;
+    }
+
+    .question {
+      margin: 20px auto;
+      padding: 20px;
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0, 51, 102, 0.2);
+      max-width: 700px;
+    }
+
+    .option {
+      padding: 12px;
+      margin: 10px 0;
+      border: 2px solid #003366;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .option:hover {
+      background: #e6f2ff;
+    }
+
+    .option.selected {
+      background: #003366;
+      color: #ffffff;
+      box-shadow: 0 0 12px #3399ff;
+    }
+
+    #nextBtn, #submitBtn {
+      display: block;
+      margin: 25px auto;
+      padding: 12px 25px;
+      background: #3399ff;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s ease;
+    }
+
+    #nextBtn:hover, #submitBtn:hover {
+      background: #003366;
+    }
+
+    #results {
+      margin-top: 30px;
+      padding: 20px;
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0, 51, 102, 0.2);
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .correct {
+      color: green;
+      font-weight: bold;
+    }
+
+    .wrong {
+      color: red;
+      font-weight: bold;
+    }
+
+    .explanation {
+      margin-top: 8px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #003366;
+    }
+  </style>
+</head>
+<body>
+  <h1>CCNA Subnetting Quiz</h1>
+
+  <div id="quiz"></div>
+  <button id="nextBtn">Next Question</button>
+  <button id="submitBtn" style="display:none;">Submit Quiz</button>
+
+  <div id="results"></div>
+
+  <script>
+    const quizData = [
+      {
+        question: "Q1. 172.16.0.0/19, borrow 3 bits. How many subnets, mask, hosts?",
+        options: [
+          "A) 32 subnets, 255.255.255.248, 6 hosts",
+          "B) 64 subnets, 255.255.255.248, 30 hosts",
+          "C) 64 subnets, 255.255.255.224, 30 hosts",
+          "D) 8 subnets, 255.255.252.0, 1022 hosts"
+        ],
+        answer: 3,
+        explanation: "Borrowing 3 bits from /19 gives /22 (255.255.252.0). That creates 8 subnets. Each subnet has 2^10 - 2 = 1022 usable hosts. This demonstrates how subnetting reduces host count while increasing subnet count."
+      },
+      {
+        question: "Q2. 192.168.10.0/24, need ≥8 subnets with ≥20 hosts. Which mask?",
+        options: [
+          "A) /27, Subnet ID = 192.168.10.32, Broadcast = 192.168.10.63, Hosts = 30",
+          "B) /28, Subnet ID = 192.168.10.16, Broadcast = 192.168.10.31, Hosts = 14",
+          "C) /29, Subnet ID = 192.168.10.8, Broadcast = 192.168.10.15, Hosts = 6",
+          "D) /26, Subnet ID = 192.168.10.64, Broadcast = 192.168.10.127, Hosts = 62"
+        ],
+        answer: 0,
+        explanation: "/27 provides 8 subnets, each with 30 usable hosts. This meets the requirement of ≥8 subnets and ≥20 hosts. The key is balancing subnet count with host capacity."
+      },
+      {
+        question: "Q3. 10.0.0.0/8, need ≥500 subnets, ≥4000 hosts.",
+        options: [
+          "A) /20, 4096 hosts, 4096 subnets",
+          "B) /19, 8190 hosts, 8192 subnets",
+          "C) /22, 1022 hosts, 16384 subnets",
+          "D) /21, 2046 hosts, 8192 subnets"
+        ],
+        answer: 0,
+        explanation: "/20 gives 4096 subnets and 4096 hosts per subnet. This is the tightest fit. Remember: larger prefix length = more subnets, fewer hosts."
+      },
+      {
+        question: "Q4. 192.168.1.64/27: Range, Broadcast, new prefix if split into 4?",
+        options: [
+          "A) Range: 65–94, Broadcast: 95, New prefix = /29",
+          "B) Range: 65–94, Broadcast: 95, New prefix = /30",
+          "C) Range: 65–90, Broadcast: 91, New prefix = /29",
+          "D) Range: 65–94, Broadcast: 95, New prefix = /28"
+        ],
+        answer: 0,
+        explanation: "Subnet 192.168.1.64/27 has valid hosts 65–94, broadcast 95. Splitting into 4 equal subnets requires borrowing 2 more bits → /29. Each /29 has 6 usable hosts."
+      },
+      {
+        question: "Q5. 172.31.0.0/16, need ≥2000 subnets. What mask?",
+        options: [
+          "A) /27, 30 hosts, Subnet ID = 172.31.18.128, Broadcast = 172.31.18.159",
+          "B) /28, 14 hosts, Subnet ID = 172.31.18.16, Broadcast = 172.31.18.31",
+          "C) /21, 2046 hosts, Subnet ID = 172.31.18.0, Broadcast = 172.31.18.7",
+          "D) /20, 4094 hosts, Subnet ID = 172.31.18.0, Broadcast = 172.31.18.15"
+        ],
+        answer: 0,
+        explanation: "/27 gives 8192 subnets, each with 30 hosts. The 150th subnet starts at 172.31.18.128 and ends at 172.31.18.159. This shows how subnet indexing works."
+      }
+    ];
+
+    let currentQuestion = 0;
+    const quizContainer = document.getElementById("quiz");
+    const nextBtn = document.getElementById("nextBtn");
+    const submitBtn = document.getElementById("submitBtn");
+
+    function showQuestion(index) {
+      quizContainer.innerHTML = "";
+      const q = quizData[index];
+      const questionDiv = document.createElement("div");
+      questionDiv.classList.add("question");
+
+      const questionText = document.createElement("h3");
+      questionText.innerText = q.question;
+      questionDiv.appendChild(questionText);
+
+      q.options.forEach((opt, optIndex) => {
+        const optionDiv = document.createElement("div");
+        optionDiv.classList.add("option");
+        optionDiv.innerText = opt;
+
+        optionDiv.addEventListener("click", () => {
+          const siblings = questionDiv.querySelectorAll(".option");
+          siblings.forEach(sib => sib.classList.remove("selected"));
+          optionDiv.classList.add("selected");
+          q.selected = optIndex;
+        });
+
+        questionDiv.appendChild(optionDiv);
+      });
+
+      quizContainer.appendChild(questionDiv);
+    }
+
+    showQuestion(currentQuestion);
+
+    nextBtn.addEventListener("click", () => {
+      if (currentQuestion < quizData.length - 1) {
+        currentQuestion++;
+        showQuestion(currentQuestion);
+        if (currentQuestion === quizData.length - 1) {
+          nextBtn.style.display = "none";
+          submitBtn.style.display = "block";
+        }
+      }
+    });
+
+   submitBtn.addEventListener("click", () => {
+  let score = 0;
+  const resultsDiv = document.getElementById("results");
+  resultsDiv.innerHTML = "<h2>Results</h2>";
+
+  quizData.forEach((q, i) => {
+    const result = document.createElement("div");
+    if (q.selected === q.answer) {
+      score++;
+      result.innerHTML = `<p><span class="correct">Q${i+1} Correct!</span></p>
+                          <p class="explanation">${q.explanation}</p>`;
+    } else {
+      result.innerHTML = `<p><span class="wrong">Q${i+1} Wrong.</span></p>
+                          <p class="explanation">${q.explanation}</p>`;
+    }
+    resultsDiv.appendChild(result);
+  });
+
+  const finalScore = document.createElement("h3");
+  finalScore.innerText = `You scored ${score} out of ${quizData.length}`;
+  resultsDiv.appendChild(finalScore);
+});
+    </script>   
+</body>
+</html>     
