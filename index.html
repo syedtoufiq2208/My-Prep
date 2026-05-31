@@ -2,8 +2,62 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>CCNA Subnetting Quiz</title>
   <style>
+      /* Responsive adjustments */
+  @media (max-width: 768px) {
+    body {
+      padding: 10px;
+    }
+
+    h1 {
+      font-size: 22px;
+    }
+
+    .question {
+      padding: 15px;
+      font-size: 14px;
+    }
+
+    .option {
+      font-size: 14px;
+      padding: 10px;
+    }
+
+    #nextBtn, #submitBtn {
+      width: 100%;   /* buttons stretch full width on mobile */
+      font-size: 14px;
+      padding: 10px;
+    }
+
+    #results {
+      font-size: 14px;
+      padding: 15px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    h1 {
+      font-size: 18px;
+    }
+
+  .question {
+    font-size: 13px;
+  }
+
+  .option {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  #nextBtn, #submitBtn {
+    font-size: 13px;
+    padding: 8px;
+  }
+}
+
     body {
       font-family: Arial, sans-serif;
       background: #f0f8ff; /* light cool blue */
@@ -156,7 +210,426 @@
         ],
         answer: 0,
         explanation: "/27 gives 8192 subnets, each with 30 hosts. The 150th subnet starts at 172.31.18.128 and ends at 172.31.18.159. This shows how subnet indexing works."
+      },
+      {
+        question: "Q6. You are given 192.168.5.0/24. You need 4 subnets. What mask should be used?",
+        options: [
+          "A) /25, 2 subnets, 126 hosts",
+          "B) /26, 4 subnets, 62 hosts",
+          "C) /27, 8 subnets, 30 hosts",
+          "D) /28, 16 subnets, 14 hosts"
+        ],
+        answer: 1,
+        explanation: "To create 4 subnets, borrow 2 bits from /24 → /26 (255.255.255.192). Each subnet has 62 usable hosts."
+      },
+      {
+        question: "Q7. A company has 10.1.0.0/16. They need at least 1000 subnets. What mask works?",
+        options: [
+          "A) /22, 1024 subnets, 1022 hosts",
+          "B) /24, 256 subnets, 254 hosts",
+          "C) /26, 1024 subnets, 62 hosts",
+          "D) /28, 4096 subnets, 14 hosts"
+        ],
+        answer: 2,
+        explanation: "1000 subnets require 10 bits (2^10 = 1024). /26 provides 1024 subnets, each with 62 hosts."
+      },
+      {
+        question: "Q8. Given 172.20.0.0/20, how many usable hosts per subnet?",
+        options: [
+          "A) 1022 hosts",
+          "B) 2046 hosts",
+          "C) 4094 hosts",
+          "D) 8190 hosts"
+        ],
+        answer: 2,
+        explanation: "/20 leaves 12 host bits → 2^12 - 2 = 4094 usable hosts."
+      },
+      {
+        question: "Q9. You have 192.168.100.0/25. What is the broadcast address?",
+        options: [
+          "A) 192.168.100.63",
+          "B) 192.168.100.127",
+          "C) 192.168.100.255",
+          "D) 192.168.100.191"
+        ],
+        answer: 1,
+        explanation: "/25 block size = 128. First subnet range 0–127. Broadcast = 192.168.100.127."
+      },
+      {
+        question: "Q10. 10.0.0.0/12 is subnetted into /16. How many subnets are created?",
+        options: [
+          "A) 4",
+          "B) 8",
+          "C) 16",
+          "D) 32"
+        ],
+        answer: 2,
+        explanation: "Borrowing 4 bits (from /12 to /16) gives 2^4 = 16 subnets."
+      },
+      {
+        question: "Q11. 192.168.1.0/28. What is the range of valid hosts in the 3rd subnet?",
+        options: [
+          "A) 17–30",
+          "B) 33–46",
+          "C) 49–62",
+          "D) 65–78"
+        ],
+        answer: 1,
+        explanation: "/28 block size = 16. Third subnet = 32–47. Valid hosts = 33–46."
+      },
+      {
+        question: "Q12. 172.16.0.0/22. How many subnets and hosts?",
+        options: [
+          "A) 16 subnets, 254 hosts",
+          "B) 32 subnets, 510 hosts",
+          "C) 64 subnets, 1022 hosts",
+          "D) 128 subnets, 2046 hosts"
+        ],
+        answer: 2,
+        explanation: "/22 leaves 10 host bits → 1022 hosts. Compared to /16, borrowed 6 bits → 64 subnets."
+      },
+      {
+        question: "Q13. 192.168.50.0/23. What is the broadcast address?",
+        options: [
+          "A) 192.168.50.255",
+          "B) 192.168.51.127",
+          "C) 192.168.51.255",
+          "D) 192.168.52.255"
+        ],
+        answer: 2,
+        explanation: "/23 block size = 512. First subnet range 192.168.50.0–192.168.51.255. Broadcast = 192.168.51.255."
+      },
+      {
+        question: "Q14. 10.0.0.0/8 subnetted into /30. How many hosts per subnet?",
+        options: [
+          "A) 2 hosts",
+          "B) 6 hosts",
+          "C) 14 hosts",
+          "D) 30 hosts"
+        ],
+        answer: 0,
+        explanation: "/30 leaves 2 host bits → 2 usable hosts. Common for point-to-point links."
+      },
+      {
+        question: "Q15. 192.168.200.0/21. How many usable hosts?",
+        options: [
+          "A) 1022",
+          "B) 2046",
+          "C) 4094",
+          "D) 8190"
+        ],
+        answer: 1,
+        explanation: "/21 leaves 11 host bits → 2^11 - 2 = 2046 usable hosts."
+      },
+      {
+        question: "Q16. 172.31.0.0/19. What is the subnet increment?",
+        options: [
+          "A) 8 in third octet",
+          "B) 16 in third octet",
+          "C) 32 in third octet",
+          "D) 64 in third octet"
+        ],
+        answer: 2,
+        explanation: "/19 mask = 255.255.224.0. Increment = 32 in the third octet."
+      },
+      {
+        question: "Q17. 192.168.1.0/26. What is the valid host range of the second subnet?",
+        options: [
+          "A) 1–62",
+          "B) 65–126",
+          "C) 129–190",
+          "D) 193–254"
+        ],
+        answer: 1,
+        explanation: "/26 block size = 64. Second subnet = 64–127. Valid hosts = 65–126."
+      },
+      {
+        question: "Q18. 10.10.0.0/17. How many usable hosts?",
+        options: [
+          "A) 8190",
+          "B) 16382",
+          "C) 32766",
+          "D) 65534"
+        ],
+        answer: 2,
+        explanation: "/17 leaves 15 host bits → 2^15 - 2 = 32766 usable hosts."
+      },
+      {
+        question: "Q19. 192.168.1.0/23. How many subnets compared to /24?",
+        options: [
+          "A) 256 subnets",
+          "B) 128 subnets",
+          "C) 64 subnets",
+          "D) 32 subnets"
+        ],
+        answer: 1,
+        explanation: "/23 merges two /24s. So instead of 256 subnets (/24), you get 128 subnets (/23)."
+      },
+      {
+        question: "Q20. 172.16.0.0/28. What is the broadcast address of the 5th subnet?",
+        options: [
+          "A) 47",
+          "B) 63",
+          "C) 79",
+          "D) 95"
+        ],
+        answer: 2,
+        explanation: "/28 block size = 16. 5th subnet starts at 64. Range = 64–79. Broadcast = 79."
+      },
+
+      {
+        question: "Q21. A router has two static routes to 192.168.10.0/24: one with next-hop 10.0.0.2 and one with exit interface Gig0/1. Which route will be preferred?",
+        options: ["A) Next-hop route","B) Exit interface route","C) Both equally","D) Neither"],
+        answer: 1,
+        explanation: "Cisco prefers directly connected exit-interface static routes over next-hop only routes because they resolve faster."
+      },
+      {
+        question: "Q22. You configure `ip route 192.168.1.0 255.255.255.0 10.1.1.2`. What happens if ARP fails for 10.1.1.2?",
+        options: ["A) Route remains active","B) Route is removed","C) Packets are dropped","D) Router switches to dynamic routing"],
+        answer: 2,
+        explanation: "If ARP fails for the next-hop, packets are dropped. The static route stays in the table but is unusable."
+      },
+      {
+        question: "Q23. Which administrative distance does a static route have by default?",
+        options: ["A) 0","B) 1","C) 5","D) 10"],
+        answer: 1,
+        explanation: "Static routes have AD = 1 by default, making them more preferred than most dynamic protocols."
+      },
+      {
+        question: "Q24. You configure `ip route 0.0.0.0 0.0.0.0 192.168.1.1`. What is this route called?",
+        options: ["A) Default route","B) Gateway of last resort","C) Floating static","D) Summary route"],
+        answer: 0,
+        explanation: "A route to 0.0.0.0/0 is the default route, often called the gateway of last resort."
+      },
+      {
+        question: "Q25. A floating static route is configured with AD 250. When will it be used?",
+        options: ["A) Always","B) Only if no other route exists","C) Only if the primary route fails","D) Never"],
+        answer: 2,
+        explanation: "Floating statics are backup routes with higher AD. They are used only if the primary route is removed."
+      },
+      {
+        question: "Q26. Which command verifies that a static route is installed in the routing table?",
+        options: ["A) show ip route","B) show running-config","C) ping","D) traceroute"],
+        answer: 0,
+        explanation: "`show ip route` displays the routing table and confirms if the static route is active."
+      },
+      {
+        question: "Q27. You configure `ip route 192.168.2.0 255.255.255.0 Serial0/0`. What problem can occur?",
+        options: ["A) Route flapping","B) Recursive lookup","C) ARP failure","D) None"],
+        answer: 2,
+        explanation: "On multipoint interfaces, exit-interface static routes can cause ARP issues. Point-to-point avoids this."
+      },
+      {
+        question: "Q28. Which static route would correctly summarize 192.168.0.0/24 through 192.168.3.0/24?",
+        options: ["A) ip route 192.168.0.0 255.255.252.0 next-hop","B) ip route 192.168.0.0 255.255.255.0 next-hop","C) ip route 192.168.0.0 255.255.254.0 next-hop","D) ip route 192.168.1.0 255.255.252.0 next-hop"],
+        answer: 0,
+        explanation: "192.168.0.0–192.168.3.0 can be summarized with /22 (255.255.252.0)."
+      },
+      {
+        question: "Q29. Which static route would override a dynamic OSPF route?",
+        options: ["A) Static with AD 1","B) Static with AD 90","C) Static with AD 110","D) Static with AD 120"],
+        answer: 0,
+        explanation: "OSPF has AD 110. A static route with AD 1 will override it."
+      },
+      {
+        question: "Q30. You configure two static routes to the same destination with equal AD. What happens?",
+        options: ["A) One is chosen randomly","B) Both are installed for load balancing","C) Neither is installed","D) Router crashes"],
+        answer: 1,
+        explanation: "Equal-cost static routes are installed simultaneously, enabling load balancing."
+      },
+      {
+        question: "Q31. Which command removes a static route?",
+        options: ["A) no ip route ...","B) delete ip route ...","C) clear ip route ...","D) erase ip route ..."],
+        answer: 0,
+        explanation: "Static routes are removed with the `no ip route` command."
+      },
+      {
+        question: "Q32. A static route points to a next-hop that is reachable via another static route. What is this called?",
+        options: ["A) Recursive static route","B) Floating static route","C) Default route","D) Summary route"],
+        answer: 0,
+        explanation: "This is a recursive static route, where resolution requires another lookup."
+      },
+      {
+        question: "Q33. Which static route would correctly configure a host route?",
+        options: ["A) ip route 192.168.1.1 255.255.255.255 next-hop","B) ip route 192.168.1.0 255.255.255.0 next-hop","C) ip route 192.168.1.0 255.255.255.255 next-hop","D) ip route 192.168.1.1 255.255.255.0 next-hop"],
+        answer: 0,
+        explanation: "A host route uses /32 mask (255.255.255.255) to route to a single IP."
+      },
+      {
+        question: "Q34. Which static route would be used if multiple exist with different ADs?",
+        options: ["A) The one with lowest AD","B) The one with highest AD","C) Both","D) None"],
+        answer: 0,
+        explanation: "Administrative distance determines preference. The lowest AD route is chosen."
+      },
+      {
+        question: "Q35. You configure `ip route 192.168.10.0 255.255.255.0 Null0`. What is the purpose?",
+        options: ["A) Blackhole route","B) Default route","C) Floating static","D) Host route"],
+        answer: 0,
+        explanation: "Routing to Null0 discards packets, used for route summarization to prevent loops."
+      },
+      {
+        question: "Q36. Which static route correctly configures a default route via exit interface?",
+        options: ["A) ip route 0.0.0.0 0.0.0.0 Gig0/0","B) ip route 255.255.255.255 0.0.0.0 Gig0/0","C) ip route 0.0.0.0 255.255.255.255 Gig0/0","D) ip route 0.0.0.0 255.255.255.0 Gig0/0"],
+        answer: 0,
+        explanation: "Default route is always 0.0.0.0 0.0.0.0 with next-hop or exit interface."
+      },
+      {
+        question: "Q37. You want to summarize 10.0.0.0/8 into two static routes: 10.0.0.0/9 and 10.128.0.0/9. Which mask is used?",
+        options: ["A) 255.0.0.0","B) 255.128.0.0","C) 255.255.0.0","D) 255.255.128.0"],
+        answer: 1,
+        explanation: "Splitting /8 into two halves requires /9 (255.128.0.0)."
+      },
+      {
+        question: "Q38. Which static route would be most specific?",
+        options: ["A) ip route 192.168.0.0 255.255.0.0 next-hop","B) ip route 192.168.1.0 255.255.255.0 next-hop","C) ip route 192.168.1.128 255.255.255.128 next-hop","D) ip route 192.168.1.130 255.255.255.255 next-hop"],
+        answer: 3,
+        explanation: "Longest prefix match wins. A /32 host route is the most specific."
+      },
+            {
+        question: "Q39. You configure two static default routes: `ip route 0.0.0.0 0.0.0.0 10.1.1.1` with AD 1 and `ip route 0.0.0.0 0.0.0.0 10.2.2.2` with AD 5. Which route will be used under normal conditions?",
+        options: [
+          "A) Both equally for load balancing",
+          "B) Only the AD 1 route",
+          "C) Only the AD 5 route",
+          "D) Neither"
+        ],
+        answer: 1,
+        explanation: "Administrative distance determines preference. The AD 1 static default route is installed and used. The AD 5 route acts as a backup if the AD 1 route fails."
+      },
+      {
+        question: "Q40. A router has a static route `ip route 192.168.50.0 255.255.255.0 192.168.1.1`. The next-hop 192.168.1.1 is reachable via OSPF. What type of static route is this?",
+        options: [
+          "A) Direct static route",
+          "B) Recursive static route",
+          "C) Floating static route",
+          "D) Null0 static route"
+        ],
+        answer: 1,
+        explanation: "Because the next-hop is resolved through another routing protocol (OSPF), this is a recursive static route. The router must perform an additional lookup to reach the next-hop."
+      },
+
+      {
+        question: "Q41. Which layer of the TCP/IP model is responsible for logical addressing?",
+        options: ["A) Application","B) Transport","C) Internet","D) Network Access"],
+        answer: 2,
+        explanation: "The Internet layer provides logical addressing (IP addresses) and routing functions."
+      },
+      {
+        question: "Q42. Which protocol is connection-oriented and guarantees delivery?",
+        options: ["A) UDP","B) TCP","C) IP","D) ICMP"],
+        answer: 1,
+        explanation: "TCP is connection-oriented, uses acknowledgments, and guarantees delivery. UDP is connectionless."
+      },
+      {
+        question: "Q43. Which IP class provides up to 16 million hosts per network?",
+        options: ["A) Class A","B) Class B","C) Class C","D) Class D"],
+        answer: 0,
+        explanation: "Class A networks (/8) support ~16 million hosts per network."
+      },
+      {
+        question: "Q44. Which protocol is used for error reporting and diagnostics in IP?",
+        options: ["A) ARP","B) ICMP","C) TCP","D) UDP"],
+        answer: 1,
+        explanation: "ICMP is used for error reporting, diagnostics, and tools like ping/traceroute."
+      },
+      {
+        question: "Q45. Which port number is used by HTTP?",
+        options: ["A) 20","B) 21","C) 80","D) 443"],
+        answer: 2,
+        explanation: "HTTP uses TCP port 80. HTTPS uses 443."
+      },
+      {
+        question: "Q46. Which protocol maps IP addresses to MAC addresses?",
+        options: ["A) DNS","B) ARP","C) ICMP","D) DHCP"],
+        answer: 1,
+        explanation: "ARP resolves IP addresses to MAC addresses on a local network."
+      },
+      {
+        question: "Q47. Which protocol dynamically assigns IP addresses?",
+        options: ["A) DNS","B) DHCP","C) ARP","D) ICMP"],
+        answer: 1,
+        explanation: "DHCP dynamically assigns IP addresses and other configuration parameters."
+      },
+      {
+        question: "Q48. Which layer of TCP/IP corresponds to the OSI Transport layer?",
+        options: ["A) Application","B) Transport","C) Internet","D) Network Access"],
+        answer: 1,
+        explanation: "The TCP/IP Transport layer corresponds to the OSI Transport layer, handling end-to-end communication."
+      },
+      {
+        question: "Q49. Which protocol is used to translate domain names into IP addresses?",
+        options: ["A) DHCP","B) ARP","C) DNS","D) ICMP"],
+        answer: 2,
+        explanation: "DNS translates human-readable domain names into IP addresses."
+      },
+      {
+        question: "Q50. Which protocol uses port 53?",
+        options: ["A) DNS","B) DHCP","C) HTTP","D) FTP"],
+        answer: 0,
+        explanation: "DNS uses port 53 (UDP for queries, TCP for zone transfers)."
+      },
+      {
+        question: "Q51. Which IP address is reserved for loopback testing?",
+        options: ["A) 127.0.0.1","B) 0.0.0.0","C) 255.255.255.255","D) 169.254.0.1"],
+        answer: 0,
+        explanation: "127.0.0.1 is the loopback address used for testing local TCP/IP stack."
+      },
+      {
+        question: "Q52. Which IP address range is reserved for APIPA?",
+        options: ["A) 192.168.0.0/16","B) 169.254.0.0/16","C) 10.0.0.0/8","D) 172.16.0.0/12"],
+        answer: 1,
+        explanation: "APIPA uses 169.254.0.0/16 when DHCP fails."
+      },
+      {
+        question: "Q53. Which protocol is used for secure web traffic?",
+        options: ["A) HTTP","B) HTTPS","C) FTP","D) Telnet"],
+        answer: 1,
+        explanation: "HTTPS uses SSL/TLS over TCP port 443 for secure web traffic."
+      },
+      {
+        question: "Q54. Which protocol is used for file transfer and uses port 21?",
+        options: ["A) FTP","B) TFTP","C) HTTP","D) SMTP"],
+        answer: 0,
+        explanation: "FTP uses TCP port 21 for control and port 20 for data transfer."
+      },
+      {
+        question: "Q55. Which protocol is lightweight and uses UDP port 69?",
+        options: ["A) FTP","B) TFTP","C) SMTP","D) SNMP"],
+        answer: 1,
+        explanation: "TFTP uses UDP port 69 and is simpler than FTP, often used for bootstrapping devices."
+      },
+      {
+        question: "Q56. Which protocol is used for sending email?",
+        options: ["A) POP3","B) IMAP","C) SMTP","D) SNMP"],
+        answer: 2,
+        explanation: "SMTP (port 25) is used for sending email. POP3 and IMAP are for receiving."
+      },
+      {
+        question: "Q57. Which protocol is used for network device management and monitoring?",
+        options: ["A) SNMP","B) SMTP","C) FTP","D) ICMP"],
+        answer: 0,
+        explanation: "SNMP is used for monitoring and managing network devices."
+      },
+      {
+        question: "Q58. Which IP address is reserved for broadcast?",
+        options: ["A) 255.255.255.255","B) 127.0.0.1","C) 0.0.0.0","D) 224.0.0.1"],
+        answer: 0,
+        explanation: "255.255.255.255 is the limited broadcast address."
+      },
+      {
+        question: "Q59. Which protocol provides reliable transport with windowing and flow control?",
+        options: ["A) UDP","B) TCP","C) IP","D) ICMP"],
+        answer: 1,
+        explanation: "TCP provides reliable transport, sequencing, windowing, and flow control."
+      },
+      {
+        question: "Q60. Which protocol is used for remote login and is insecure?",
+        options: ["A) SSH","B) Telnet","C) FTP","D) RDP"],
+        answer: 1,
+        explanation: "Telnet provides remote login but transmits data in plaintext, making it insecure. SSH is the secure alternative."
       }
+
+
     ];
 
     let currentQuestion = 0;
@@ -194,32 +667,50 @@
 
     showQuestion(currentQuestion);
 
-    nextBtn.addEventListener("click", () => {
-      if (currentQuestion < quizData.length - 1) {
-        currentQuestion++;
-        showQuestion(currentQuestion);
-        if (currentQuestion === quizData.length - 1) {
-          nextBtn.style.display = "none";
-          submitBtn.style.display = "block";
-        }
-      }
-    });
+      nextBtn.addEventListener("click", () => {
+    const q = quizData[currentQuestion];
 
-   submitBtn.addEventListener("click", () => {
+    // Check if the user selected an option
+    if (q.selected === undefined) {
+      alert("Please select an option before moving to the next question.");
+      return; // stop here, don't move forward
+    }
+
+    if (currentQuestion < quizData.length - 1) {
+      currentQuestion++;
+      showQuestion(currentQuestion);
+
+      if (currentQuestion === quizData.length - 1) {
+        nextBtn.style.display = "none";
+        submitBtn.style.display = "block";
+      }
+    }
+  });
+
+submitBtn.addEventListener("click", () => {
   let score = 0;
   const resultsDiv = document.getElementById("results");
   resultsDiv.innerHTML = "<h2>Results</h2>";
 
   quizData.forEach((q, i) => {
     const result = document.createElement("div");
+    result.style.marginBottom = "20px";
+
+    // Show the actual question text
+    const questionText = document.createElement("p");
+    questionText.innerHTML = `<strong>${q.question}</strong>`;
+    result.appendChild(questionText);
+
+    // Show whether correct or wrong + explanation
     if (q.selected === q.answer) {
       score++;
-      result.innerHTML = `<p><span class="correct">Q${i+1} Correct!</span></p>
-                          <p class="explanation">${q.explanation}</p>`;
+      result.innerHTML += `<p><span class="correct">Correct!</span></p>
+                           <p class="explanation">${q.explanation}</p>`;
     } else {
-      result.innerHTML = `<p><span class="wrong">Q${i+1} Wrong.</span></p>
-                          <p class="explanation">${q.explanation}</p>`;
+      result.innerHTML += `<p><span class="wrong">Wrong.</span></p>
+                           <p class="explanation">${q.explanation}</p>`;
     }
+
     resultsDiv.appendChild(result);
   });
 
